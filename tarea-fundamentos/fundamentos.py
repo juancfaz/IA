@@ -65,8 +65,6 @@ def euclidean_distance(loc1: Position, loc2: Position) -> float:
     return distancia
     # Fin de tu código
 
-print(euclidean_distance((1, 5), (4, 1)))
-
 ############################################################
 # Problema 3c
 
@@ -95,9 +93,7 @@ def mutate_sentences(sentence: str) -> List[str]:
                'el gato y el gato', gato y el gato y',]
     """
     # Inicio de tu código
-    raise Exception("Aún no implementada")
     # Fin de tu código
-
 
 ############################################################
 # Problema 3d
@@ -116,9 +112,9 @@ def sparse_vector_dot_product(v1: SparseVector, v2: SparseVector) -> float:
     lineales.
     """
     # Inicio de tu código
-    raise Exception("Aún no implementada")
+    dot_product = sum(v1[key] * v2[key] for key in v1.keys() & v2.keys())
+    return dot_product
     # Fin de tu código
-
 
 ############################################################
 # Problema 3e
@@ -143,9 +139,10 @@ def increment_sparse_vector(
     Esta función será de utilidad más adelante.
     """
     # Inicio de tu código
-    raise Exception("Aún no implementada")
+    for key in v2:
+        v1[key] = v1.get(key, 0) + scale * v2[key]
+    return v1
     # Fin de tu código
-
 
 ############################################################
 # Problema 3f
@@ -159,5 +156,11 @@ def find_nonsingleton_words(text: str) -> Set[str]:
     Puede que collections.defaultdict(int) te sea de utilidad.
     """
     # Inicio de tu código
-    raise Exception("Aún no implementada")
+    words = text.split()
+    word_counts = DefaultDict(int)
+    for word in words:
+        word_counts[word] += 1
+    return [word for word, count in word_counts.items() if count > 1]
     # Fin de tu código
+
+print(find_nonsingleton_words("el veloz zorro marrón salta sobre el zorro perezoso"))
