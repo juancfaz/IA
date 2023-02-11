@@ -38,15 +38,12 @@ def find_alphabetically_first_word(text: str) -> str:
     un error.
     """
     # Inicio de tu código
-    lista_palabras = text.split()
-    for i in range(len(lista_palabras)):
-        i_min = i
-        for j in range(i+1, len(lista_palabras)):
-            if lista_palabras[j] < lista_palabras[i_min]:
-                i_min = j
-        lista_palabras[i], lista_palabras[i_min] = lista_palabras[i_min], lista_palabras[i]
-    return lista_palabras[0]
+    words = text.split()
+    if not words:
+        return ""
+    return min(words, key=lambda x: x.lower())
     # Fin de tu código
+
 
 ############################################################
 # Problema 3b
@@ -64,6 +61,7 @@ def euclidean_distance(loc1: Position, loc2: Position) -> float:
     distancia = math.sqrt(distancia)
     return distancia
     # Fin de tu código
+
 
 ############################################################
 # Problema 3c
@@ -93,9 +91,31 @@ def mutate_sentences(sentence: str) -> List[str]:
                'el gato y el gato', gato y el gato y',]
     """
     # Inicio de tu código
+    words = sentence.split()
+    words.pop()
+    pairs = set(zip(words, words[1:]))
+    mutation = [sentence] 
+    for i in pairs:
+        cmutation = i[0]+" "+i[1]
+        last = i[1]
+        wordcount=2
+        for x in range(len(words)+1):
+            for o in pairs:
+                if(wordcount==len(words)+1):
+                    break
+                if(last==o[0]):
+                    cmutation=cmutation+" "+o[1]
+                    last=o[1]
+                    wordcount+=1
+        if cmutation==sentence:
+            break
+        mutation.append(cmutation)
+    return mutation
     # Fin de tu código
-
 ############################################################
+
+print(mutate_sentences("y el gato y el raton"))
+
 # Problema 3d
 
 
@@ -144,6 +164,7 @@ def increment_sparse_vector(
     return v1
     # Fin de tu código
 
+
 ############################################################
 # Problema 3f
 
@@ -160,7 +181,5 @@ def find_nonsingleton_words(text: str) -> Set[str]:
     word_counts = DefaultDict(int)
     for word in words:
         word_counts[word] += 1
-    return [word for word, count in word_counts.items() if count > 1]
+    return set([word for word, count in word_counts.items() if count > 1])
     # Fin de tu código
-
-print(find_nonsingleton_words("el veloz zorro marrón salta sobre el zorro perezoso"))

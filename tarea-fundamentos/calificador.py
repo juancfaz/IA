@@ -17,6 +17,7 @@ def test_3a():
         output = fundamentos.find_alphabetically_first_word(test_case["input"])
         assert output == test_case["output"]
 
+
 test_cases_3b = [{"inputs": ((1, 5), (4, 1)), "output": 5}]
 
 
@@ -25,7 +26,6 @@ def test_3b():
         output = fundamentos.euclidean_distance(*test_case["inputs"])
         assert output == test_case["output"]
 
-'''
 test_cases_3c = [
     {"input": "a a a a a", "output": ["a a a a a"]},
     {"input": "el gato", "output": ["el gato"]},
@@ -45,7 +45,7 @@ def test_3c():
     for test_case in test_cases_3c:
         output = fundamentos.mutate_sentences(test_case["input"])
         assert sorted(output) == sorted(test_case["output"])
-'''
+
 
 test_cases_3d = [
     {
