@@ -84,7 +84,7 @@ def test_3c0():
     for datapt in data:
         assert (util.dotProduct(datapt[0], weights) >= 0) == (datapt[1] == 1)
 
-'''
+
 def test_3c1():
     weights = {}
     for _ in range(100):
@@ -94,7 +94,6 @@ def test_3c1():
     data = sentimientos.generateDataset(100, weights)
     for phi, y in data:
         assert (util.dotProduct(phi, weights) >= 0) == (y == 1)
-
 
 def test_3d0():
     fe = sentimientos.extractCharacterFeatures(3)
@@ -110,4 +109,3 @@ def test_3d0():
         "rld": 1,
     }
     assert ans == fe(sentence)
-'''

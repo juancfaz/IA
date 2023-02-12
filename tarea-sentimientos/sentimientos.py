@@ -84,7 +84,6 @@ def generateDataset(numExamples: int, weights: WeightVector) -> List[Example]:
     correctamente por |weights|.
     """
     random.seed(42)
-
     # Regresa un solo ejemplo (phi(x), y).
     # phi(x) debe ser un diccionario cuyas llaves sean un subconjunto de las
     # llaves en weights y los valores pueden ser cualquier cosa con un puntaje
@@ -95,12 +94,16 @@ def generateDataset(numExamples: int, weights: WeightVector) -> List[Example]:
     # Nota que el vector de pesos puede ser arbitrario durante las pruebas.
     def generateExample() -> Tuple[Dict[str, int], int]:
         # Inicio de tu código
-        raise Exception("Aún no implementada")
+        phi = {}
+        score = 0
+        while score == 0:
+            phi = {key: random.randint(-10, 10) for key in weights.keys() if random.random() < 0.5}
+            score = sum(weights[key] * phi[key] for key in phi)
+        y = 1 if score > 0 else -1
         # Fin de tu código
         return phi, y
 
     return [generateExample() for _ in range(numExamples)]
-
 
 ############################################################
 # Problem 3d: character features
@@ -117,9 +120,13 @@ def extractCharacterFeatures(n: int) -> Callable[[str], FeatureVector]:
 
     def extract(x: str) -> Dict[str, int]:
         # Inicio de tu código
-        raise Exception("Aún no implementada")
+        features = {}
+        x = x.replace(" ", "")
+        for i in range(len(x) - n + 1):
+            gram = x[i:i+n]
+            features[gram] = features.get(gram, 0) + 1
+        return features
         # Fin de tu código
-
     return extract
 
 
@@ -158,6 +165,7 @@ def testValuesOfN(n: int):
         )
     )
 
+print(testValuesOfN(10))
 
 ############################################################
 # Problem 5: k-means
