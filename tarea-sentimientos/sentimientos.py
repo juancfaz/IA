@@ -164,9 +164,6 @@ def extractCharacterFeatures(n: int) -> Callable[[str], FeatureVector]:
         # Fin de tu código
     return extract
 
-func = extractCharacterFeatures(3)
-print(func("I like tacos"))
-
 ############################################################
 # Problem 3e:
 
@@ -201,6 +198,24 @@ def testValuesOfN(n: int):
             % (trainError, validationError)
         )
     )
+    return trainError, validationError
+
+tuplen = list(testValuesOfN(random.randint(0, 50)))
+print(tuplen)
+print()
+a = 0
+capture_rand = 0
+while True:
+    rand = random.randint(0, 50)
+    new_tuple = testValuesOfN(rand)
+    if new_tuple[0] < tuplen[0]:
+        tuplen[0] = new_tuple[0]
+        tuplen[1] = new_tuple[1]
+        capture_rand = rand
+    if a == 10:
+        break
+    a += 1
+print(tuplen)
 
 ############################################################
 # Problem 5: k-means
