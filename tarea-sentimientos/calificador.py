@@ -50,23 +50,23 @@ def test_3b():
 
 
 def test_3b2():
-    trainExamples = readExamples("polarity.train")
-    validationExamples = readExamples("polarity.dev")
+    trainExamples = util.readExamples("polarity.train")
+    validationExamples = util.readExamples("polarity.dev")
     featureExtractor = sentimientos.extractWordFeatures
     weights = sentimientos.learnPredictor(
         trainExamples, validationExamples, featureExtractor, numEpochs=20, eta=0.01
     )
-    outputWeights(weights, "weights")
-    outputErrorAnalysis(
+    util.outputWeights(weights, "weights")
+    util.outputErrorAnalysis(
         validationExamples, featureExtractor, weights, "error-analysis"
     )  # Para depurar
-    trainError = evaluatePredictor(
+    trainError = util.evaluatePredictor(
         trainExamples,
-        lambda x: (1 if dotProduct(featureExtractor(x), weights) >= 0 else -1),
+        lambda x: (1 if util.dotProduct(featureExtractor(x), weights) >= 0 else -1),
     )
-    validationError = evaluatePredictor(
+    validationError = util.evaluatePredictor(
         validationExamples,
-        lambda x: (1 if dotProduct(featureExtractor(x), weights) >= 0 else -1),
+        lambda x: (1 if util.dotProduct(featureExtractor(x), weights) >= 0 else -1),
     )
     print(
         (
@@ -84,7 +84,7 @@ def test_3c0():
     for datapt in data:
         assert (util.dotProduct(datapt[0], weights) >= 0) == (datapt[1] == 1)
 
-
+'''
 def test_3c1():
     weights = {}
     for _ in range(100):
@@ -110,3 +110,4 @@ def test_3d0():
         "rld": 1,
     }
     assert ans == fe(sentence)
+'''

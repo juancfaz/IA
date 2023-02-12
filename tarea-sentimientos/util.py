@@ -7,6 +7,15 @@ FeatureVector = Dict[str, int]
 WeightVector = Dict[str, float]
 Example = Tuple[FeatureVector, int]
 
+def readExamples(filename):
+    examples = []
+    with open(filename, 'r') as f:
+        for line in f:
+            parts = line.strip().split('\t')
+            if len(parts) == 2:
+                text, label = parts
+                examples.append((text, int(label)))
+    return examples
 
 def dotProduct(d1: Dict, d2: Dict) -> float:
     """
