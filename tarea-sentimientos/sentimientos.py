@@ -25,15 +25,22 @@ def extractWordFeatures(x: str) -> FeatureVector:
     Ejemplo: "I am what I am" --> {'I': 2, 'am': 2, 'what': 1}
     """
     # Inicio de tu código
+    # Separamos por espacios
     words = x.split()
+    # Definimos nuestro vector de caracteristicas como vacio
     feature_vector = {}
     for word in words:
-      feature_vector[word] = feature_vector.get(word, 0) + 1
+        # Actualiza la letra en el vector de caracteristicas,
+        # incrementandolo en 1 si ya existia en el diccionario,
+        # o agregándolo con un valor de 1 si es la primera vez que aparece.
+        feature_vector[word] = feature_vector.get(word, 0) + 1
+    # Devolvemos el vector
     return feature_vector
     # Fin de tu código
 
 ############################################################
 # Problem 3b: stochastic gradient descent
+
 
 T = TypeVar("T")
 
@@ -60,19 +67,43 @@ def learnPredictor(
     - El predictor debe tener como salida +1 si el puntaje es precisamente 0.
     """
     weights = {}  # característica => peso
-
     # Inicio de tu código
+    a = 0
     for epoch in range(numEpochs):
-      for example, label in trainExamples:
-        features = featureExtractor(example)
-        activation = dotProduct(weights, features)
-        if activation * label <= 0:
-          increment(weights, eta * label, features)
-      trainError = evaluatePredictor(trainExamples, lambda x: (1 if dotProduct(weights, featureExtractor(x)) >= 0 else -1))
-      validationError = evaluatePredictor(validationExamples, lambda x: (1 if dotProduct(weights, featureExtractor(x)) >= 0 else -1))
-    print(f"Epoch {epoch}: train error = {trainError:.3f}, validation error = {validationError:.3f}")
+        for example, label in trainExamples:
+            # vector de caracteristicas donde cada clave es una caracteristica
+            # y cada valor es el peso asociado.
+            features = featureExtractor(example)
+
+            # activacion = w · phi(x)
+            activation = dotProduct(weights, features)
+
+            # Cuando el ejemplo de entrenamiento se clasifica incorrectamente actualiza los pesos.
+            # Si la activación multiplicada por la etiqueta es mayor que cero, significa que el ejemplo se clasificó correctamente.
+            if activation * label <= 0:
+                increment(weights, eta * label, features)
+
+        # Después de cada época de entrenamiento, se evalúa el desempeño,
+        # sobre los datos de entrenamiento y validación.
+
+        # En el primer parámetro pasamos los datos.
+        # En el segundo parámetro si la función de articulación en la activación
+        # (w · phi(x)) es mayor igual 0, significa que estamos clasificando
+        # correctamente nuestra predicción por lo tanto devolvemos 1, de lo
+        # contrario devolveremos -1.
+        trainError = evaluatePredictor(trainExamples, lambda x: (
+            1 if dotProduct(weights, featureExtractor(x)) >= 0 else -1))
+        validationError = evaluatePredictor(validationExamples, lambda x: (
+            1 if dotProduct(weights, featureExtractor(x)) >= 0 else -1))
+    print(
+        f"Epoch {epoch}: train error = {trainError:.10f}, validation error = {validationError:.10f}")
     # Fin de tu código
     return weights
+
+
+trainExamples = (("hi bye", 1), ("hi hi", -1))
+validationExamples = (("hi", -1), ("bye", 1))
+print(learnPredictor(trainExamples, validationExamples, extractWordFeatures, 20, 0.01))
 
 ############################################################
 # Problem 3c: generate test case
@@ -97,7 +128,8 @@ def generateDataset(numExamples: int, weights: WeightVector) -> List[Example]:
         phi = {}
         score = 0
         while score == 0:
-            phi = {key: random.randint(-10, 10) for key in weights.keys() if random.random() < 0.5}
+            phi = {key: random.randint(-10, 10)
+                   for key in weights.keys() if random.random() < 0.5}
             score = sum(weights[key] * phi[key] for key in phi)
         y = 1 if score > 0 else -1
         # Fin de tu código
@@ -164,8 +196,6 @@ def testValuesOfN(n: int):
             % (trainError, validationError)
         )
     )
-
-print(testValuesOfN(10))
 
 ############################################################
 # Problem 5: k-means
