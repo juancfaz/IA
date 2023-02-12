@@ -57,9 +57,7 @@ def learnPredictor(
     de parejas (x,y)), un |featureExtractor| para aplicar a x, y el número de
     épocas para entrenar |numEpochs|, el tamaño de paso |eta|, regresa el vector
     de pesos (vector de características disperas) aprendido.
-
     Debes implementar descenso de gradiente estocástico.
-
     Notas:
     - ¡Solo usa trainExamples para entrenar!
     - Debes llamar evaluatePredictor() sobre trainExamples y validationExamples para
@@ -97,7 +95,7 @@ def learnPredictor(
     print(
         f"Epoch {epoch}: train error = {trainError:.10f}, validation error = {validationError:.10f}")
     # Fin de tu código
-    return weights
+    return weights, trainError, validationError
 
 ############################################################
 # Problem 3c: generate test case
@@ -180,17 +178,17 @@ def testValuesOfN(n: int):
     weights = learnPredictor(
         trainExamples, validationExamples, featureExtractor, numEpochs=20, eta=0.01
     )
-    outputWeights(weights, "weights")
+    outputWeights(weights[0], "weights")
     outputErrorAnalysis(
-        validationExamples, featureExtractor, weights, "error-analysis"
+        validationExamples, featureExtractor, weights[0], "error-analysis"
     )  # Usa esto para depurar
     trainError = evaluatePredictor(
         trainExamples,
-        lambda x: (1 if dotProduct(featureExtractor(x), weights) >= 0 else -1),
+        lambda x: (1 if dotProduct(featureExtractor(x), weights[0]) >= 0 else -1),
     )
     validationError = evaluatePredictor(
         validationExamples,
-        lambda x: (1 if dotProduct(featureExtractor(x), weights) >= 0 else -1),
+        lambda x: (1 if dotProduct(featureExtractor(x), weights[0]) >= 0 else -1),
     )
     print(
         (
@@ -200,22 +198,24 @@ def testValuesOfN(n: int):
     )
     return trainError, validationError
 
-tuplen = list(testValuesOfN(random.randint(0, 50)))
-print(tuplen)
-print()
-a = 0
-capture_rand = 0
-while True:
-    rand = random.randint(0, 50)
-    new_tuple = testValuesOfN(rand)
-    if new_tuple[0] < tuplen[0]:
-        tuplen[0] = new_tuple[0]
-        tuplen[1] = new_tuple[1]
-        capture_rand = rand
-    if a == 10:
-        break
-    a += 1
-print(tuplen)
+weights = learnPredictor(readExamples("polarity.train"), readExamples("polarity.dev"), extractWordFeatures, 20, 0.01)
+
+y = list()
+for i in range(10):
+  new_weight = testValuesOfN(i)
+  y.append(new_weight[1])
+
+def mini(x: list):
+  for i in range(len(x)):
+    if min(x) == x[i]:
+      return i
+  
+import matplotlib.pyplot as plt
+x = [i for i in range(10)]
+plt.plot(x, y)
+plt.scatter(mini(y), y[mini(y)], color='g')
+plt.scatter(mini(y), weights[2], color='r')
+plt.show()
 
 ############################################################
 # Problem 5: k-means
