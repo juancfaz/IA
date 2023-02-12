@@ -68,7 +68,6 @@ def learnPredictor(
     """
     weights = {}  # característica => peso
     # Inicio de tu código
-    a = 0
     for epoch in range(numEpochs):
         for example, label in trainExamples:
             # vector de caracteristicas donde cada clave es una caracteristica
@@ -100,11 +99,6 @@ def learnPredictor(
     # Fin de tu código
     return weights
 
-
-trainExamples = (("hi bye", 1), ("hi hi", -1))
-validationExamples = (("hi", -1), ("bye", 1))
-print(learnPredictor(trainExamples, validationExamples, extractWordFeatures, 20, 0.01))
-
 ############################################################
 # Problem 3c: generate test case
 
@@ -128,13 +122,16 @@ def generateDataset(numExamples: int, weights: WeightVector) -> List[Example]:
         phi = {}
         score = 0
         while score == 0:
+            # Se selecciona un subconjunto aleatorio de las características en weights
+            # y les asigna valores aleatorios.
             phi = {key: random.randint(-10, 10)
                    for key in weights.keys() if random.random() < 0.5}
+            # Un margen mayor indica que el modelo de clasificación es más robusto.
             score = sum(weights[key] * phi[key] for key in phi)
+        # Clasificación.
         y = 1 if score > 0 else -1
         # Fin de tu código
         return phi, y
-
     return [generateExample() for _ in range(numExamples)]
 
 ############################################################
@@ -153,14 +150,22 @@ def extractCharacterFeatures(n: int) -> Callable[[str], FeatureVector]:
     def extract(x: str) -> Dict[str, int]:
         # Inicio de tu código
         features = {}
+        # Quitamos todos los espacios
         x = x.replace(" ", "")
+        # El ciclo termina cuando ya no se puden crear mas n-gramas.
+        # Ej. n = 3, x = "Holamundo" -> i < 7 -> Hol amu ndo
         for i in range(len(x) - n + 1):
             gram = x[i:i+n]
+            # Actualiza el n-grama en el vector de caracteristicas,
+            # incrementandolo en 1 si ya existia en el diccionario,
+            # o agregándolo con un valor de 1 si es la primera vez que aparece.
             features[gram] = features.get(gram, 0) + 1
         return features
         # Fin de tu código
     return extract
 
+func = extractCharacterFeatures(3)
+print(func("I like tacos"))
 
 ############################################################
 # Problem 3e:
