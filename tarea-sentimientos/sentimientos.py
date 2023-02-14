@@ -44,7 +44,6 @@ def extractWordFeatures(x: str) -> FeatureVector:
 
 T = TypeVar("T")
 
-
 def learnPredictor(
     trainExamples: List[Tuple[T, int]],
     validationExamples: List[Tuple[T, int]],
@@ -95,7 +94,7 @@ def learnPredictor(
     print(
         f"Epoch {epoch}: train error = {trainError:.10f}, validation error = {validationError:.10f}")
     # Fin de tu código
-    return weights, trainError, validationError
+    return weights
 
 ############################################################
 # Problem 3c: generate test case
@@ -198,24 +197,6 @@ def testValuesOfN(n: int):
     )
     return trainError, validationError
 
-weights = learnPredictor(readExamples("polarity.train"), readExamples("polarity.dev"), extractWordFeatures, 20, 0.01)
-
-y = list()
-for i in range(10):
-  new_weight = testValuesOfN(i)
-  y.append(new_weight[1])
-
-def mini(x: list):
-  for i in range(len(x)):
-    if min(x) == x[i]:
-      return i
-  
-import matplotlib.pyplot as plt
-x = [i for i in range(10)]
-plt.plot(x, y)
-plt.scatter(mini(y), y[mini(y)], color='g')
-plt.scatter(mini(y), weights[2], color='r')
-plt.show()
 
 ############################################################
 # Problem 5: k-means
