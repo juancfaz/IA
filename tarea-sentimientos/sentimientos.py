@@ -219,5 +219,49 @@ def kmeans(
              pérdida final)
     """
     # Inicio de tu código
-    raise Exception("Aún no implementada")
+    
+    # Inicializar los K centros aleatoriamente
+    centers = random.sample(examples, K)
+    # Producto punto entre cada ejemplo y cada centro
+    products = [[sum([x*y for x, y in zip(example.values(), center.values())]) for center in centers] for example in examples]
+    # Inicializar las asignaciones
+    assignments = len(examples)
+    # Inicializar la pérdida
+    loss = float('inf')
+    
+    # Iterar hasta que se alcance la convergencia o se llegue al máximo número de épocas
+    for _ in range(maxEpochs):
+        
+        # Asignar cada ejemplo al centro más cercano
+        for i in examples:
+            distances = products[i]
+            assignments[i] = min(range(K), key=lambda j: distances[j])
+        
+        # Recalcular los centros como el promedio de los ejemplos asignados a cada grupo
+        new_centers = []
+        for j in range(K):
+            members = [examples[i] for i in range(len(examples)) if assignments[i] == j]
+            if members:
+                new_center = Counter()
+                for member in members:
+                    new_center += member
+                new_center = {k: v/len(members) for k, v in new_center.items()}
+                new_centers.append(new_center)
+            else:
+                new_centers.append(centers[j])
+        
+        # Producto punto entre cada ejemplo y cada nuevo centro
+        products = [[sum([x*y for x, y in zip(example.values(), center.values())]) for center in new_centers] for example in examples]
+        # Calcular la nueva pérdida como la suma de las distancias al centro de cada ejemplo
+        new_loss = sum([products[i][assignments[i]] for i in range(len(examples))])
+        
+        # Si la pérdida no ha cambiado mucho, terminar
+        if abs(new_loss - loss) < 1e-6:
+            break
+        else:
+            loss = new_loss
+            centers = new_centers
+    
+    # Centroides finales, asignaciones y la pérdida final
+    return centers, assignments, loss
     # Fin de tu código
