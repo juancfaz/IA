@@ -71,22 +71,21 @@ def learnPredictor(
             # y cada valor es el peso asociado.
             features = featureExtractor(example)
 
-            # activacion = w · phi(x)
-            activation = dotProduct(weights, features)
+            # puntaje = w · phi(x)
+            score = dotProduct(weights, features)
 
             # Cuando el ejemplo de entrenamiento se clasifica incorrectamente actualiza los pesos.
-            # Si la activación multiplicada por la etiqueta es mayor que cero, significa que el ejemplo se clasificó correctamente.
-            if activation * label <= 0:
+            # Si el puntaje multiplicada por la etiqueta es mayor que cero, significa que el ejemplo se clasificó correctamente.
+            if score * label <= 0:
                 increment(weights, eta * label, features)
 
         # Después de cada época de entrenamiento, se evalúa el desempeño,
         # sobre los datos de entrenamiento y validación.
 
         # En el primer parámetro pasamos los datos.
-        # En el segundo parámetro si la función de articulación en la activación
-        # (w · phi(x)) es mayor igual 0, significa que estamos clasificando
-        # correctamente nuestra predicción por lo tanto devolvemos 1, de lo
-        # contrario devolveremos -1.
+        # En el segundo parámetro si la función uno cero en (w · phi(x)) >= 0,
+        # significa que estamos clasificando correctamente nuestra predicción por
+        # lo tanto devolvemos 1, de lo contrario devolveremos -1.
         trainError = evaluatePredictor(trainExamples, lambda x: (
             1 if dotProduct(weights, featureExtractor(x)) >= 0 else -1))
         validationError = evaluatePredictor(validationExamples, lambda x: (
