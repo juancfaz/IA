@@ -1,15 +1,15 @@
 from search import SearchAlgorithm
-import random
 
 
-class BacktrackingS(SearchAlgorithm):
+class DepthFirstSearchIterative(SearchAlgorithm):
     def __init__(self, problem):
         super().__init__(problem)
         self.frontier = []
         self.BestPath = None
         self.BestCost = float('inf')
+        self.encontro = False
+        self.maxdeeplimit = 1
         self.pastCosts[self.startState] = 0
-        
         
     def stateCost(self, state):
         return self.pastCosts.get(state, None)
@@ -28,20 +28,24 @@ class BacktrackingS(SearchAlgorithm):
         cost, path = frontier.pop()
         lastState = path[-1]
         
-        print(path)
-        
         if problem.isEnd(lastState):
             if cost < self.BestCost:
                 self.BestCost = cost
                 self.BestPath = path
+            frontier.clear()
             return self.BestPath
+        else:
+            if len(path) < self.maxdeeplimit:
+                for _, newState, newcost in problem.successorsAndCosts(lastState):
+                    if newState not in path:
+                        frontier.append([cost+newcost, path + [newState]])
+                        self.pastCosts[newState] = self.pastCosts[lastState] + newcost
+            else:
+                frontier.clear()
+                self.maxdeeplimit += 1
         
         if self.BestPath != None and frontier == []:
             print(f'BestCost: {self.BestCost}, BestPath: {self.BestPath}')
             return self.BestPath
         
-        for _, newState, newcost in problem.successorsAndCosts(lastState):
-            if newState not in path:
-                frontier.append([cost+newcost, path + [newState]])
-                self.pastCosts[newState] = self.pastCosts[lastState] + newcost
         return path

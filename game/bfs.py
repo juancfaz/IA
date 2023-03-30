@@ -1,8 +1,6 @@
 from search import SearchAlgorithm
-import random
 
-
-class BacktrackingS(SearchAlgorithm):
+class BreadthFirstSearch(SearchAlgorithm):
     def __init__(self, problem):
         super().__init__(problem)
         self.frontier = []
@@ -25,20 +23,19 @@ class BacktrackingS(SearchAlgorithm):
         if not frontier:
             return self.BestPath
         
-        cost, path = frontier.pop()
+        cost, path = frontier.pop(0)
         lastState = path[-1]
-        
-        print(path)
         
         if problem.isEnd(lastState):
             if cost < self.BestCost:
                 self.BestCost = cost
                 self.BestPath = path
-            return self.BestPath
+            frontier.clear()
+            return path
         
         if self.BestPath != None and frontier == []:
             print(f'BestCost: {self.BestCost}, BestPath: {self.BestPath}')
-            return self.BestPath
+            return []
         
         for _, newState, newcost in problem.successorsAndCosts(lastState):
             if newState not in path:
