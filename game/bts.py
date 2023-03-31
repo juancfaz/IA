@@ -28,8 +28,6 @@ class BacktrackingS(SearchAlgorithm):
         cost, path = frontier.pop()
         lastState = path[-1]
         
-        print(path)
-        
         if problem.isEnd(lastState):
             if cost < self.BestCost:
                 self.BestCost = cost

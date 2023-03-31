@@ -3,19 +3,20 @@ import sys
 import matplotlib as mpl
 import pygame
 
-# from astar import AstarSearch
 from problem import Problem
 from ucs import UniformCostSearch
 from bts import BacktrackingS
 from dfs import DepthFirstSearch
 from bfs import BreadthFirstSearch
-from dfsi import DepthFirstIterativeSearch
+from dfsi import DepthFirstSearchIterative
+from astar import AstarSearch
+from dp import DynamicProgrammingSearch
 
 cmap = mpl.colormaps["inferno"]
-hcells = 15
-vcells = 15
-cellw = 50
-cellh = 50
+hcells = 7
+vcells = 7
+cellw = 80
+cellh = 80
 
 
 class Button:
@@ -87,12 +88,12 @@ class Game:
         self.astar_btn = Button("./assets/route-astar.png", 64, 32, 7 * 32 + 6 * 64, 0)
 
         self.pause_btn.setEnabled(False)
-        self.bt_btn.setEnabled(False)
-        self.dfs_btn.setEnabled(False)
-        self.bfs_btn.setEnabled(False)
-        self.dfsid_btn.setEnabled(False)
-        self.dp_btn.setEnabled(False)
-        self.astar_btn.setEnabled(False)
+        self.bt_btn.setEnabled(True)
+        self.dfs_btn.setEnabled(True)
+        self.bfs_btn.setEnabled(True)
+        self.dfsid_btn.setEnabled(True)
+        self.dp_btn.setEnabled(True)
+        self.astar_btn.setEnabled(True)
 
         self.buttons = [
             self.pen_btn,
@@ -115,15 +116,15 @@ class Game:
             (self.bt_btn, BacktrackingS),
             (self.dfs_btn, DepthFirstSearch),
             (self.bfs_btn, BreadthFirstSearch),
-            (self.dfsid_btn, DepthFirstIterativeSearch),
-            (self.dp_btn, None),
+            (self.dfsid_btn, DepthFirstSearchIterative),
+            (self.dp_btn, DynamicProgrammingSearch),
             (self.ucs_btn, UniformCostSearch),
-            (self.astar_btn, None),
+            (self.astar_btn, AstarSearch),
         ]
 
         self.algorithmButton = None
         self.algorithm = None
-        self.selectAlgorithm(self.bt_btn)
+        self.selectAlgorithm(self.ucs_btn)
 
         self.tool = "pen"
         self.pen_btn.setActive(True)

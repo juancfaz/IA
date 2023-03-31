@@ -42,7 +42,7 @@ class DepthFirstSearchIterative(SearchAlgorithm):
                         self.pastCosts[newState] = self.pastCosts[lastState] + newcost
             else:
                 frontier.clear()
-                self.maxdeeplimit += 1
+                self.maxdeeplimit += 6
         
         if self.BestPath != None and frontier == []:
             print(f'BestCost: {self.BestCost}, BestPath: {self.BestPath}')

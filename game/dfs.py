@@ -7,9 +7,8 @@ class DepthFirstSearch(SearchAlgorithm):
         self.frontier = []
         self.BestPath = None
         self.BestCost = float('inf')
-        self.encontro = False
         self.pastCosts[self.startState] = 0
-        
+        self.visited = set()
         
     def stateCost(self, state):
         return self.pastCosts.get(state, None)
@@ -37,10 +36,11 @@ class DepthFirstSearch(SearchAlgorithm):
         
         if self.BestPath != None and frontier == []:
             print(f'BestCost: {self.BestCost}, BestPath: {self.BestPath}')
-            return self.Bestpath
+            return self.BestPath
         
         for _, newState, newcost in problem.successorsAndCosts(lastState):
-            if newState not in path:
+            if newState not in self.visited:
+                self.visited.add(newState)
                 frontier.append([cost+newcost, path + [newState]])
                 self.pastCosts[newState] = self.pastCosts[lastState] + newcost
         return path

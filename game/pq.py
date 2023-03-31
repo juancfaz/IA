@@ -25,5 +25,6 @@ class PriorityQueue:
 
         return None, None
     
-    def isEmpty(self):
-        return len(self.heap) == 0
+    def removeAll(self):
+        self.heap = []
+        self.priorities = {}
