@@ -10,6 +10,7 @@ class DepthFirstSearchIterative(SearchAlgorithm):
         self.encontro = False
         self.maxdeeplimit = 1
         self.pastCosts[self.startState] = 0
+        self.visited = set()
         
     def stateCost(self, state):
         return self.pastCosts.get(state, None)
@@ -37,11 +38,13 @@ class DepthFirstSearchIterative(SearchAlgorithm):
         else:
             if len(path) < self.maxdeeplimit:
                 for _, newState, newcost in problem.successorsAndCosts(lastState):
-                    if newState not in path:
+                    if newState not in self.visited:
+                        self.visited.add(newState)
                         frontier.append([cost+newcost, path + [newState]])
                         self.pastCosts[newState] = self.pastCosts[lastState] + newcost
             else:
                 frontier.clear()
+                self.visited.clear()
                 self.maxdeeplimit += 6
         
         if self.BestPath != None and frontier == []:

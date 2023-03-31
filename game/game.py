@@ -13,10 +13,10 @@ from astar import AstarSearch
 from dp import DynamicProgrammingSearch
 
 cmap = mpl.colormaps["inferno"]
-hcells = 7
-vcells = 7
-cellw = 80
-cellh = 80
+hcells = 15
+vcells = 15
+cellw = 60
+cellh = 60
 
 
 class Button:

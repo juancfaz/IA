@@ -36,7 +36,6 @@ class DynamicProgrammingSearch(SearchAlgorithm):
 
             return self.fCosts[state]
 
-        #while len(self.futureQueue) > 0:
         exploreCosts(self)
         
 
@@ -63,8 +62,6 @@ class DynamicProgrammingSearch(SearchAlgorithm):
         
         self.numStatesExplored += 1
         path = self.path(state)
-        #print("camino:", path, "\n")
-        #print("state:", state, "\n")
 
         if problem.isEnd(state):
             self.finished = True
