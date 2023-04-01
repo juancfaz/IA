@@ -1,12 +1,14 @@
 from search import SearchAlgorithm
 from pq import PriorityQueue
 
+
 class AstarSearch(SearchAlgorithm):
     def __init__(self, problem):
         super().__init__(problem)
         self.frontier = PriorityQueue()
         self.backrefs = {}
-        self.frontier.update(self.startState, 0.0)
+        self.frontier.update(problem.startState(), 0)
+        self.backrefs[problem.startState()] = (None, None)
 
     def stateCost(self, state):
         return self.pastCosts.get(state, None)
@@ -21,27 +23,26 @@ class AstarSearch(SearchAlgorithm):
         return path
 
     def heuristic(self, state):
-        # ecuclidean distance
-        #return ((state[0] - self.problem.endState()[0])**2 + (state[1] - self.problem.endState()[1])**2)**0.5
+        # euclidean distance
+        return ((state[0] - self.problem.endState()[0])**2 + (state[1] - self.problem.endState()[1])**2)**0.5
         # manhattan distance
-        return abs(state[0] - self.problem.endState()[0]) + abs(state[1] - self.problem.endState()[1])
-        #return max(abs(state[0] - self.problem.endState()[0]), abs(state[1] - self.problem.endState()[1]))
-    
+        #return abs(state[0] - self.problem.endState()[0]) + abs(state[1] - self.problem.endState()[1])
+        # return max(abs(state[0] - self.problem.endState()[0]), abs(state[1] - self.problem.endState()[1]))
+
     def step(self):
         problem = self.problem
-        startState = self.startState
+        startState = problem.startState()
         frontier = self.frontier
         backrefs = self.backrefs
 
         if self.actions:
             return self.path(problem.endState())
-        
-        state, pastCost = frontier.removeMin()
-        
-        if state is None and pastCost is None:
+
+        state, priority = frontier.removeMin()
+
+        if state is None:
             return []
-        
-        self.pastCosts[state] = pastCost
+
         self.numStatesExplored += 1
         path = self.path(state)
 
@@ -52,10 +53,13 @@ class AstarSearch(SearchAlgorithm):
                 self.actions.append(action)
                 state = prevState
             self.actions.reverse()
-            self.pathCost = pastCost
+            self.pathCost = self.pastCosts[problem.endState()]
             return path
-        
+
         for action, newState, cost in problem.successorsAndCosts(state):
-            if frontier.update(newState, pastCost + cost + self.heuristic(newState)):
+            newCost = self.pastCosts.get(state, 0) + cost
+            if frontier.update(newState, newCost + self.heuristic(newState)):
                 backrefs[newState] = (action, state)
+                self.pastCosts[newState] = newCost
+
         return path

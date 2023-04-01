@@ -3,45 +3,32 @@ from search import SearchAlgorithm
 class DynamicProgrammingSearch(SearchAlgorithm):
     def __init__(self, problem):
         super().__init__(problem)
-        self.backrefs = {}
         self.fCosts = {}
+        self.backrefs = {}
         self.futureQueue = [problem.endState()]
         self.currentState = problem.startState()
-        self.startState = problem.startState()
         self.finished = False
 
     def futureCosts(self):
-        def exploreCosts(self):
-            if len(self.futureQueue) == 0:
-                return
+        state = self.futureQueue.pop(0)
 
-            state = self.futureQueue.pop(0)
+        if self.problem.isEnd(state):
+            self.fCosts[state] = 0
+            for _, previousState, _ in self.problem.successorsAndCosts(state):
+                self.futureQueue.append(previousState)
+        elif state not in self.fCosts:
+            alreadyVisited = []
+            for _, nextState, nextCost in self.problem.successorsAndCosts(state):
+                if nextState in self.fCosts:
+                    alreadyVisited.append((nextState, nextCost))
+                else:
+                    self.futureQueue.append(nextState)
 
-            if self.problem.isEnd(state):
-                self.fCosts[state] = 0
-                for _, previousState, _ in self.problem.successorsAndCosts(state):
-                    self.futureQueue.append(previousState)
-            elif state not in self.fCosts:
-                alreadyVisited = []
-                for _, nextState, nextCost in \
-                    self.problem.successorsAndCosts(state):
-                    if nextState in self.fCosts:
-                        alreadyVisited.append((nextState, nextCost))
-                    else:
-                        self.futureQueue.append(nextState)
-
-                self.fCosts[state] = \
-                        min(nextCost + self.fCosts[nextState] for \
-                                nextState, nextCost in alreadyVisited) 
-
-            return self.fCosts[state]
-
-        exploreCosts(self)
-        
+            self.fCosts[state] = min(nextCost + self.fCosts[nextState] for nextState, nextCost in alreadyVisited)
 
     def stateCost(self, state):
         return self.fCosts.get(state, None)
-    
+
     def path(self, state):
         path = []
         while state != self.problem.startState():
@@ -52,36 +39,27 @@ class DynamicProgrammingSearch(SearchAlgorithm):
         return path
 
     def step(self):
-        if self.finished == True:
+        if self.finished:
             return self.path(self.currentState)
 
-        problem = self.problem
-        startState = self.startState
-        backrefs = self.backrefs
-        state = self.currentState
-        
         self.numStatesExplored += 1
-        path = self.path(state)
+        path = self.path(self.currentState)
 
-        if problem.isEnd(state):
+        if self.problem.isEnd(self.currentState):
             self.finished = True
             return path
 
-        if state not in self.fCosts:
-            for _ in range(len(self.futureQueue)):
+        if self.currentState not in self.fCosts:
+            while len(self.futureQueue) > 0:
                 self.futureCosts()
             return path
 
-
-        nextState = state
-        bestAction = None
-        for action, neighbour, _ in problem.successorsAndCosts(state):
+        nextState = self.currentState
+        for action, neighbour, _ in self.problem.successorsAndCosts(self.currentState):
             if self.fCosts[neighbour] < self.fCosts[nextState]:
                 nextState = neighbour
                 bestAction = action
 
-        #print(nextState)
-
-        backrefs[nextState] = (bestAction, state)
+        self.backrefs[nextState] = (bestAction, self.currentState)
         self.currentState = nextState
         return path
