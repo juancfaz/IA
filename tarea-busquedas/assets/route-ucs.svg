@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 1024 512"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="route-ucs.svg"
+   width="1024"
+   height="512"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:export-filename="route-ucs.png"
+   inkscape:export-xdpi="5.9982319"
+   inkscape:export-ydpi="5.9982319"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.4003225"
+     inkscape:cx="406.69203"
+     inkscape:cy="257.79776"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+  <path
+     d="m 475.23392,118.9788 c 0,42.9904 -50.61221,107.13345 -72.44996,132.73929 -3.25426,3.76808 -8.05,5.22393 -12.41755,4.28191 h -79.55793 c -15.15797,0 -27.40424,12.24627 -27.40424,27.40424 0,15.15797 12.24627,27.40424 27.40424,27.40424 h 82.21272 c 45.38827,0 82.21272,36.82445 82.21272,82.21272 0,45.38827 -36.82445,82.21272 -82.21272,82.21272 H 156.31708 c 7.45053,-8.47819 16.52818,-19.35425 25.69147,-31.51488 5.39521,-7.19361 10.9617,-15.07233 16.27127,-23.2936 H 393.0212 c 15.15797,0 27.40424,-12.24627 27.40424,-27.40424 0,-15.15797 -12.24627,-27.40424 -27.40424,-27.40424 h -82.21272 c -45.38827,0 -82.21272,-36.82445 -82.21272,-82.21272 0,-45.38827 36.82445,-82.21272 82.21272,-82.21272 h 34.08402 c -17.98403,-26.97605 -34.08402,-57.97709 -34.08402,-82.21272 0,-45.388269 36.82445,-82.212716 82.21272,-82.212716 45.38827,0 82.21272,36.824447 82.21272,82.212716 z M 137.04847,455.62276 c -3.25425,3.68244 -6.16595,6.9367 -8.64946,9.67712 l -1.54149,1.71276 -0.17127,-0.17127 c -5.1383,3.93936 -12.50319,3.42553 -17.12765,-1.54149 C 87.977757,441.835 36.766084,381.46003 36.766084,338.21272 36.766084,292.82445 73.590531,256 118.9788,256 c 45.38827,0 82.21272,36.82445 82.21272,82.21272 0,25.69147 -18.06967,57.37762 -37.25264,83.83984 -9.16329,12.58883 -18.5835,23.97871 -26.37658,32.97073 z m 9.33457,-117.41004 a 27.404239,27.404239 0 1 0 -54.808477,0 27.404239,27.404239 0 1 0 54.808477,0 z M 393.0212,146.38304 a 27.404239,27.404239 0 1 0 0,-54.808477 27.404239,27.404239 0 1 0 0,54.808477 z"
+     id="path2"
+     style="stroke-width:0.856382" />
+  <text
+     xml:space="preserve"
+     style="font-size:319.463px;line-height:0.85;font-family:arial;-inkscape-font-specification:arial;letter-spacing:-47.9195px;stroke-width:0.958391"
+     x="766.72217"
+     y="373.40277"
+     id="text114"><tspan
+       sodipodi:role="line"
+       x="742.76239"
+       y="373.40277"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:expanded;font-size:319.463px;font-family:'Iosevka Comfy Wide';-inkscape-font-specification:'Iosevka Comfy Wide Bold Expanded';text-align:center;text-anchor:middle;stroke-width:0.958391"
+       id="tspan344">UCS</tspan></text>
+  <rect
+     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:20.1246;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="rect112"
+     width="1004.1773"
+     height="491.8754"
+     x="10.0623"
+     y="10.0623" />
+</svg>

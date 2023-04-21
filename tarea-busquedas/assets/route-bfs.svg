@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 1024 512"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="route-bfs.svg"
+   width="1024"
+   height="512"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:export-filename="route-bfs.png"
+   inkscape:export-xdpi="5.9982319"
+   inkscape:export-ydpi="5.9982319"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.0224429"
+     inkscape:cx="470.93096"
+     inkscape:cy="361.87841"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+  <path
+     d="m 475.22762,118.98274 c 0,42.98916 -50.61075,107.13037 -72.44788,132.73547 -3.25416,3.76798 -8.04976,5.22378 -12.41719,4.28179 h -79.55564 c -15.15754,0 -27.40346,12.24592 -27.40346,27.40345 0,15.15754 12.24592,27.40346 27.40346,27.40346 h 82.21035 c 45.38697,0 82.21036,36.82338 82.21036,82.21035 0,45.38697 -36.82339,82.21036 -82.21036,82.21036 H 156.31994 c 7.45031,-8.47794 16.52771,-19.35369 25.69074,-31.51397 5.39505,-7.19341 10.96138,-15.0719 16.2708,-23.29293 h 194.73578 c 15.15754,0 27.40346,-12.24592 27.40346,-27.40346 0,-15.15753 -12.24592,-27.40345 -27.40346,-27.40345 h -82.21035 c -45.38697,0 -82.21036,-36.82339 -82.21036,-82.21036 0,-45.38697 36.82339,-82.21036 82.21036,-82.21036 h 34.08304 c -17.98352,-26.97527 -34.08304,-57.97542 -34.08304,-82.21035 0,-45.386972 36.82338,-82.210361 82.21035,-82.210361 45.38697,0 82.21036,36.823389 82.21036,82.210361 z M 137.05189,455.61703 c -3.25416,3.68233 -6.16578,6.93649 -8.64922,9.67684 l -1.54144,1.71272 -0.17127,-0.17128 c -5.13815,3.93925 -12.50283,3.42544 -17.12716,-1.54144 C 87.982581,441.82966 36.772379,381.45643 36.772379,338.21036 36.772379,292.82339 73.595768,256 118.98274,256 c 45.38697,0 82.21035,36.82339 82.21035,82.21036 0,25.69073 -18.06915,57.37598 -37.25156,83.83744 -9.16303,12.58846 -18.58297,23.97802 -26.37583,32.96978 z m 9.3343,-117.40667 a 27.403453,27.403453 0 1 0 -54.806906,0 27.403453,27.403453 0 1 0 54.806906,0 z M 393.01726,146.38619 a 27.403453,27.403453 0 1 0 0,-54.806906 27.403453,27.403453 0 1 0 0,54.806906 z"
+     id="path2"
+     style="stroke-width:0.856358" />
+  <text
+     xml:space="preserve"
+     style="font-size:333.333px;line-height:1.25;font-family:arial;-inkscape-font-specification:arial;letter-spacing:-50px"
+     x="504.16696"
+     y="378.49988"
+     id="text114"><tspan
+       sodipodi:role="line"
+       id="tspan112"
+       x="504.16696"
+       y="378.49988"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:expanded;font-size:333.333px;font-family:'Iosevka Comfy Wide';-inkscape-font-specification:'Iosevka Comfy Wide Bold Expanded'">BFS</tspan></text>
+  <rect
+     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:20.1246;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="rect112"
+     width="1004.1773"
+     height="491.8754"
+     x="10.0623"
+     y="10.0623" />
+</svg>
