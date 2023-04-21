@@ -73,11 +73,11 @@ class BlackJackMDP(MarkovDecisionProcess):
         elif action == "quit":
             return 1 if source == target else 0
     
-    def reward(self, action: str, target: Tuple[int, List[int], List[int]]):
+    def reward(self, source: Tuple[int, List[int], List[int]], action: str, target: Tuple[int, List[int], List[int]]) -> float:
         if target[0] == 21:
             return 1
         if action == "peek":
-            return self.peek_cost
+            return -self.peek_cost
         else:
             return 0
         
@@ -132,7 +132,7 @@ def montecarlo(episodes):
 
 mdp = BlackJackMDP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10], 4, 1, 21)
 eps = []
-for i in range(10000):
+for i in range(1000):
     eps.append(episodes(mdp))
 
 prob, R = montecarlo(eps)
