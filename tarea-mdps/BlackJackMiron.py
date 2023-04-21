@@ -29,9 +29,11 @@ class BlackJackMiron():
             print(state)
             
             if total > self.threshold:
+                print("You exceeded the threshold!")
                 episode.append([state, None, 0, None])
                 return episode
             if not any(deck_counts):
+                print("You ran out of cards!")
                 episode.append([state, None, 0, None])
                 return episode
             

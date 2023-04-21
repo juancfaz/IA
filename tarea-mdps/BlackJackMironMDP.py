@@ -4,18 +4,17 @@ from mdp import MarkovDecisionProcess
 from mdp import targets
 
 class BlackJackMDP(MarkovDecisionProcess):
-    def __init__(self, v: List[int], multiplicity: int, peek_cost: float, threshold: int):
+    def __init__(self, v, multiplicity, peek_cost, threshold):
         self.v = v
         self.multiplicity = multiplicity
         self.peek_cost = peek_cost
         self.threshold = threshold
         
-    def startState(self) -> Tuple[int, List[int], List[int]]:
+    def startState(self):
         v = self.v
-        v = random.sample(range(1, 14), 13)
         return (0, (), (self.multiplicity,)*len(v))
     
-    def actions(self, state: Tuple[int, List[int], List[int]]) -> List[str]:
+    def actions(self, state):
         total, peek_index, deck_counts = state
         if total > self.threshold or not any(deck_counts):
             return []
@@ -24,7 +23,7 @@ class BlackJackMDP(MarkovDecisionProcess):
         else:
             return ["take", "quit"]
     
-    def transitions(self, state: Tuple[int, Tuple[int], Tuple[int]], action: str) -> List[Tuple[int, Tuple[int], Tuple[int]]]:
+    def transitions(self, state, action):
         total, peek_index, deck_counts = state
         results = []
         if action == "take":
@@ -50,7 +49,7 @@ class BlackJackMDP(MarkovDecisionProcess):
             results.append((total, (), tuple(deck_counts)))
         return results
     
-    def probability(self, source: Tuple[int, List[int], List[int]], action: str, target: Tuple[int, List[int], List[int]]) -> float:
+    def probability(self, source, action, target):
         if action == "take":
             if not source[1]:
                 total, _, deck_counts = source
@@ -70,7 +69,7 @@ class BlackJackMDP(MarkovDecisionProcess):
         elif action == "quit":
             return 1 if source == target else 0
     
-    def reward(self, source: Tuple[int, List[int], List[int]], action: str, target: Tuple[int, List[int], List[int]]) -> float:
+    def reward(self, source, action, target):
         if target[0] == 21:
             return 1
         if action == "peek":
@@ -78,13 +77,36 @@ class BlackJackMDP(MarkovDecisionProcess):
         else:
             return 0
         
-    def isEnd(self, state: Tuple[int, List[int], List[int]]) -> bool:
+    def isEnd(self, state):
         total, _, _ = state
         return total > self.threshold or total == 21 or not any(state[2])
 
+v = random.sample(range(1, 14), 13)
+print(v)
+mdp = BlackJackMDP(v, 4, 1, 21)
 
-mdp = BlackJackMDP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10], 4, 1, 21)
+def episodes(mdp):
+    ls = list()
+    state = mdp.startState()
+    while not mdp.isEnd(state):
+        action = random.choice(list(mdp.actions(state)))
+        if (action == "quit"):
+            ls.append([state[0], action, 0, state[0]])
+            break
+        accProb = 0.0
+        for target, prob, reward in targets(mdp, state, action):
+            accProb += prob
+            if random.random() < accProb:
+                break
+        reward = mdp.reward(state, action, target)
+        ls.append([state[0], action, reward, target[0]])
+        state=target
+    return ls
 
+eps = []
+for i in range(1):
+    eps.append(episodes(mdp))
+print(eps)
 
 '''
 def reachable_states(mdp, n=0):
@@ -126,9 +148,7 @@ def always_take():
     return "take"
 
 print(poleval(mdp, always_take))
-'''
 
-'''
 def episodes(mdp):
     ls = list()
     state = mdp.startState()
@@ -174,7 +194,7 @@ def montecarlo(episodes):
 
 
 eps = []
-for i in range(1000):
+for i in range(10):
     eps.append(episodes(mdp))
 
 prob, R = montecarlo(eps)
