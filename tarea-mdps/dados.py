@@ -105,8 +105,12 @@ def montecarlo(episodes):
 
 mdp = DiceGame()
 eps = []
-for i in range(10000):
+for i in range(3):
     eps.append(episodes(mdp))
+
+print(eps)
+
+'''
 prob, R = montecarlo(eps)
 
 for state, action, next_state in sorted(prob.keys()):
@@ -118,3 +122,4 @@ print()
 for state, action in sorted(R.keys()):
     reward = R[(state, action)]
     print("R({}, {}) = {}".format(state, action, reward))
+'''
