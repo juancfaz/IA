@@ -70,10 +70,10 @@ class BlackJackMDP(MarkovDecisionProcess):
             return 1 if source == target else 0
     
     def reward(self, source, action, target):
-        if target[0] == 21:
-            return 1
         if action == "peek":
             return -self.peek_cost
+        elif target[0] == 21:
+            return 21
         else:
             return 0
         
@@ -81,131 +81,70 @@ class BlackJackMDP(MarkovDecisionProcess):
         total, _, _ = state
         return total > self.threshold or total == 21 or not any(state[2])
 
+def episodes(mdp):
+    ls = list()
+    state = mdp.startState()
+    while not mdp.isEnd(state):
+        action = random.choice(list(mdp.actions(state)))
+        accProb = 0.0
+        if (action == "quit" and state[0] <= 21):
+            ls.append([state[0], action, state[0], state[0]])
+            break
+        elif (action == "quit" and state[0] > 21):
+            ls.append([state[0], action, 0, state[0]])
+            break
+        for target, prob, reward in targets(mdp, state, action):
+            accProb += prob
+            if random.random() < accProb:
+                break
+        reward = mdp.reward(state, action, target)
+        ls.append([state[0], action, reward, target[0]])
+        state=target
+    return ls
+
 v = random.sample(range(1, 14), 13)
 print(v)
 mdp = BlackJackMDP(v, 4, 1, 21)
 
-def episodes(mdp):
-    ls = list()
-    state = mdp.startState()
-    while not mdp.isEnd(state):
-        action = random.choice(list(mdp.actions(state)))
-        if (action == "quit"):
-            ls.append([state[0], action, 0, state[0]])
-            break
-        accProb = 0.0
-        for target, prob, reward in targets(mdp, state, action):
-            accProb += prob
-            if random.random() < accProb:
-                break
-        reward = mdp.reward(state, action, target)
-        ls.append([state[0], action, reward, target[0]])
-        state=target
-    return ls
-
 eps = []
-for i in range(1):
-    eps.append(episodes(mdp))
-print(eps)
-
-'''
-def reachable_states(mdp, n=0):
-    pending = {mdp.startState()}
-    reachable = set()
-    while len(pending) > 0:
-        source = pending.pop()
-        reachable.add(source)
-        for action in mdp.actions(source):
-            for target in mdp.transitions(source, action):
-                if target in reachable:
-                    continue
-                pending.add(target)
-        if n == 100:
-            break
-        n += 1
-    return reachable
-
-def poleval(mdp, policy, n=100):
-    states = reachable_states(mdp)
-    v1 = {s: 0 for s in states}
-    v2 = {}
-
-    def Q(src, act):
-        dis = mdp.discount()
-        return max(sum(p * (r + dis * v1[tgt]) for tgt, p, r in targets(mdp, src, act)))
-
-    for _ in range(n):
-        for s in states:
-            if mdp.isEnd(s):
-                v2[s] = 0
-            else:
-                if policy == "take":
-                    v2[s] = Q(s, "take")
-        v1, v2 = v2, v1
-    return v1
-
-def always_take():
-    return "take"
-
-print(poleval(mdp, always_take))
-
-def episodes(mdp):
-    ls = list()
-    state = mdp.startState()
-    while not mdp.isEnd(state):
-        action = random.choice(list(mdp.actions(state)))
-        accProb = 0.0
-        for target, prob, reward in targets(mdp, state, action):
-            accProb += prob
-            if random.random() < accProb:
-                break
-        reward = mdp.reward(state, action, target)
-        ls.append([state[0], action, reward, target[0]])
-        state=target
-    return ls
-
-def montecarlo(episodes):
-    T = {}
-    N = {}
-    R = {}
-    for episode in episodes:
-        for state, action, reward, target in episode:
-            stateAction_pair = (state, action)
-            if stateAction_pair not in N:
-                N[stateAction_pair] = 1
-            else:
-                N[stateAction_pair] += 1
-                
-            stateAction_target_pair = (state, action, target)
-            if stateAction_target_pair not in T:
-                T[stateAction_target_pair] = 1
-            else:
-                T[stateAction_target_pair] += 1
-            
-            R[(state, action)] = reward
-                
-    probabilities = {}
-    for sa_target_pair in T:
-        sa_pair = (sa_target_pair[0], sa_target_pair[1])
-        probabilities[sa_target_pair] = T[sa_target_pair] / N[sa_pair]
-        
-    return probabilities, R
-
-
-
-eps = []
-for i in range(10):
+for i in range(10000):
     eps.append(episodes(mdp))
 
-prob, R = montecarlo(eps)
 
-for state, action, next_state in sorted(prob.keys()):
-    probability = prob[(state, action, next_state)]
-    print("T({}, {}, {}) = {}".format(state, action, next_state, probability))
+def Qlearning(eps, eta, epsilon=0.1, gamma=1.0):
+    # Inicializar la función de valor Q con un valor arbitrario para cada par (estado, acción).
+    Q = {}
+    for e in eps:
+        for t in e:
+            s, a, _, _ = t
+            if (s, a) not in Q:
+                Q[(s, a)] = 0.0
 
-print()
+    # Para cada episodio en eps, realizar el aprendizaje Q.
+    for e in eps:
+        s = e[0][0]
+        for t in e:
+            s, a, r, s_ = t
+            # Seleccionar una acción utilizando una política epsilon-greedy.
+            if random.random() < epsilon:
+                a_ = random.choice(['take', 'peek', 'quit'])
+            else:
+                Qsa = [Q.get((s, act), 0.0) for act in ['take', 'peek', 'quit']]
+                maxQ = max(Qsa)
+                if Qsa.count(maxQ) > 1:
+                    best = [i for i in range(len(['take', 'peek', 'quit'])) if Qsa[i] == maxQ]
+                    i = random.choice(best)
+                else:
+                    i = Qsa.index(maxQ)
+                a_ = ['take', 'peek', 'quit'][i]
+            # Actualizar la función de valor Q utilizando la regla de actualización Q-learning.
+            Q[(s, a)] = Q.get((s, a), 0.0) + eta * (r + gamma * max([Q.get((s_, act), 0.0) for act in ['take', 'peek', 'quit']]) - Q.get((s, a), 0.0))
+            # Actualizar el estado actual.
+            s = s_
 
-for state, action in sorted(R.keys()):
-    reward = R[(state, action)]
-    print("R({}, {}) = {}".format(state, action, reward))
-'''
+    return Q
+
+q_values = Qlearning(eps, 0.01)
+
+for key, value in q_values.items():
+    print(f"{key}: {value}")
