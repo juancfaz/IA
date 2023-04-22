@@ -18,7 +18,7 @@ class BlackJackMDP(MarkovDecisionProcess):
         total, peek_index, deck_counts = state
         if total > self.threshold or not any(deck_counts):
             return []
-        if not peek_index or len(peek_index) == 2:
+        if not peek_index or len(peek_index) == 1:
             return ["take", "peek", "quit"]
         else:
             return ["take", "quit"]
@@ -107,44 +107,44 @@ print(v)
 mdp = BlackJackMDP(v, 4, 1, 21)
 
 eps = []
-for i in range(10000):
+for i in range(1000):
     eps.append(episodes(mdp))
 
 
 def Qlearning(eps, eta, epsilon=0.1, gamma=1.0):
-    # Inicializar la función de valor Q con un valor arbitrario para cada par (estado, acción).
+    
     Q = {}
+    actions = ['take', 'peek', 'quit']
+    
     for e in eps:
         for t in e:
             s, a, _, _ = t
             if (s, a) not in Q:
                 Q[(s, a)] = 0.0
-
-    # Para cada episodio en eps, realizar el aprendizaje Q.
+                    
     for e in eps:
         s = e[0][0]
         for t in e:
             s, a, r, s_ = t
-            # Seleccionar una acción utilizando una política epsilon-greedy.
+            
             if random.random() < epsilon:
-                a_ = random.choice(['take', 'peek', 'quit'])
+                a_ = random.choice(actions)
             else:
-                Qsa = [Q.get((s, act), 0.0) for act in ['take', 'peek', 'quit']]
-                maxQ = max(Qsa)
-                if Qsa.count(maxQ) > 1:
-                    best = [i for i in range(len(['take', 'peek', 'quit'])) if Qsa[i] == maxQ]
+                Qopt = [Q.get((s, act), 0.0) for act in actions]
+                maxQ = max(Qopt)
+                if Qopt.count(maxQ) > 1:
+                    best = [i for i in range(len(actions)) if Qopt[i] == maxQ]
                     i = random.choice(best)
                 else:
-                    i = Qsa.index(maxQ)
-                a_ = ['take', 'peek', 'quit'][i]
-            # Actualizar la función de valor Q utilizando la regla de actualización Q-learning.
-            Q[(s, a)] = Q.get((s, a), 0.0) + eta * (r + gamma * max([Q.get((s_, act), 0.0) for act in ['take', 'peek', 'quit']]) - Q.get((s, a), 0.0))
-            # Actualizar el estado actual.
+                    i = Qopt.index(maxQ)
+                a_ = actions[i]
+                
+            Q[(s, a)] = Q.get((s, a), 0.0) + eta * (r + gamma * max([Q.get((s_, act), 0.0) for act in actions]) - Q.get((s, a), 0.0))
+            
             s = s_
-
     return Q
 
-q_values = Qlearning(eps, 0.01)
+q_values = Qlearning(eps, 0.2, epsilon=0.1, gamma=0.95)
 
-for key, value in q_values.items():
+for key, value in sorted(q_values.items()):
     print(f"{key}: {value}")
