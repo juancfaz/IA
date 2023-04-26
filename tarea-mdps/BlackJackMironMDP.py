@@ -107,9 +107,8 @@ print(v)
 mdp = BlackJackMDP(v, 4, 1, 21)
 
 eps = []
-for i in range(1000):
+for i in range(100):
     eps.append(episodes(mdp))
-
 
 def Qlearning(eps, eta, epsilon=0.1, gamma=1.0):
     

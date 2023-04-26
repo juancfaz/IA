@@ -5,11 +5,9 @@ from camion import MagicBus
 
 def reachable_states(mdp):
     pending = {mdp.startState()}
-    print(pending)
     reachable = set()
     while len(pending) > 0:
         source = pending.pop()
-        print(source)
         reachable.add(source)
         for action in mdp.actions(source):
             for target in mdp.transitions(source, action):
@@ -35,6 +33,31 @@ def poleval(mdp, policy, n=100):
                 v2[s] = Q(s, policy(s))
         v1, v2 = v2, v1
     return v1
+
+def ValueIteration(mdp):
+    V = {}
+    for state in reachable_states(mdp):
+        V[state] = 0
+
+    def Q(state, action):
+        return (sum(prob * ( reward + mdp.discount() * V[newState] )
+                   for newState, prob, reward in targets(mdp, state, action)), action)
+        
+    while True:
+        newV = {}
+        pi = {}
+        for state in reachable_states(mdp):
+            if mdp.isEnd(state):
+                newV[state] = 0
+                pi[state] = 'None'
+            else:
+                newV[state], pi[state] = max(Q(state, action) for action in mdp.actions(state))
+        if max(abs(newV[state] - V[state]) for state in reachable_states(mdp)) < 1e-10:
+            break
+        V = newV
+        print('{:15} {:15} {:15}'.format('s', 'V(s)', 'pi(s)'))
+        for state in reachable_states(mdp):
+            print('{:15} {:15} {:15}'.format(state, V[state], pi[state]))
 
 
 def noop(*args):
